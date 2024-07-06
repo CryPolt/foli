@@ -275,7 +275,7 @@ const Visitors = () => {
                                 <DatePicker.RangePicker
                                     bordered={false}
                                     ranges={{
-                                        "Today": [moment(), moment()],
+                                        "Segodna": [moment(), moment()],
                                         "Yesterday": [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
                                         "This Week": [moment().startOf('week'), moment().endOf('week')],
                                         "Last 7 Days": [moment().subtract(7, 'day'), moment()],
