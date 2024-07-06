@@ -130,3 +130,4 @@ Any contributors who want to make this project better can make contributions, wh
 ## License
 
 **Ezfolio** is licensed under the [MIT License](https://github.com/arifszn/ezfolio/blob/main/LICENSE).
+# folio
