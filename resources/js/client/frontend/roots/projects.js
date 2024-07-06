@@ -126,7 +126,7 @@ function App() {
                                             md={12}
                                             sm={24}
                                             xs={24}
-                                            data-aos="fade-up" 
+                                            data-aos="fade-up"
                                             data-aos-anchor-placement="top-bottom"
                                             style={{marginBottom: '24px'}}
                                         >
@@ -193,5 +193,5 @@ if (document.getElementById('react-project-root')) {
             <App />
         </React.StrictMode>,
         document.getElementById('react-project-root')
-    ); 
+    );
 }

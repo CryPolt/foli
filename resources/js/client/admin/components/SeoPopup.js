@@ -24,7 +24,7 @@ const SeoPopup = (props) => {
     useEffect(() => {
         if (props.data) {
             form.setFieldsValue({
-                title: props.data.title, 
+                title: props.data.title,
                 author: props.data.author,
                 description: props.data.description,
                 image: props.data.image,
@@ -53,39 +53,39 @@ const SeoPopup = (props) => {
 
     const handleOk = () => {
         form
-        .validateFields()
-        .then((values) => {
-            //save form
-            setLoading(true);
+            .validateFields()
+            .then((values) => {
+                //сохранить форму
+                setLoading(true);
 
-            const formData = new FormData();
-            
-            formData.append('title', values.title);
-            formData.append('author', values.author);
-            formData.append('description', values.description);
-            formData.append('image', values.image);
+                const formData = new FormData();
 
-            HTTP.post(Routes.api.admin.seo, formData)
-            .then(response => {
-                Utils.handleSuccessResponse(response, () => {
-                    Utils.showNotification(response.data.message, 'success');
-                    props.submitCallback(response.data.payload.inserted);
-                })
+                formData.append('title', values.title);
+                formData.append('author', values.author);
+                formData.append('description', values.description);
+                formData.append('image', values.image);
+
+                HTTP.post(Routes.api.admin.seo, formData)
+                    .then(response => {
+                        Utils.handleSuccessResponse(response, () => {
+                            Utils.showNotification(response.data.message, 'success');
+                            props.submitCallback(response.data.payload.inserted);
+                        })
+                    })
+                    .catch((error) => {
+                        Utils.handleException(error);
+                    }).finally(() => {
+                    setLoading(false);
+                });
             })
-            .catch((error) => {
-                Utils.handleException(error);
-            }).finally(() => {
-                setLoading(false);
+            .catch((info) => {
+                console.log('Ошибка валидации:', info);
             });
-        })
-        .catch((info) => {
-            console.log('Validate Failed:', info);
-        });
     }
 
     return (
         <StyledDrawer
-            title="Search Engine Optimization"
+            title="Оптимизация для поисковых систем"
             onClose={handleClose}
             visible={visible}
             destroyOnClose={true}
@@ -98,10 +98,10 @@ const SeoPopup = (props) => {
                     }}
                 >
                     <Button  onClick={handleClose} style={{ marginRight: 8 }}>
-                        Cancel
+                        Отменить
                     </Button>
                     <Button onClick={handleOk} type="primary" loading={loading}>
-                        Save
+                        Сохранить
                     </Button>
                 </div>
             }
@@ -113,32 +113,32 @@ const SeoPopup = (props) => {
                 name="seo"
             >
                 <Form.Item
-                    label={<React.Fragment>Meta Title</React.Fragment>}
+                    label={<React.Fragment>Мета-заголовок</React.Fragment>}
                     name="title"
                 >
-                    <Input placeholder="Enter Meta Title"/>
+                    <Input placeholder="Введите мета-заголовок"/>
                 </Form.Item>
                 <Form.Item
-                    label={<React.Fragment>Meta Author</React.Fragment>}
+                    label={<React.Fragment>Мета-автор</React.Fragment>}
                     name="author"
                 >
-                    <Input placeholder="Enter Meta Author"/>
+                    <Input placeholder="Введите мета-автора"/>
                 </Form.Item>
                 <Form.Item
-                    label={<React.Fragment>Meta Description</React.Fragment>}
+                    label={<React.Fragment>Мета-описание</React.Fragment>}
                     name="description"
                 >
-                    <Input.TextArea rows={4} placeholder="Enter Meta Description"/>
+                    <Input.TextArea rows={4} placeholder="Введите мета-описание"/>
                 </Form.Item>
-                <Form.Item 
-                    label="Meta Image" 
+                <Form.Item
+                    label="Мета-изображение"
                     name="image"
                 >
                     <FileUploaderFormInput
                         previewFile={props.data && props.data.image && (Utils.backend + '/' + props.data.image)}
                         onChangeCallback={imageOnChange}
                         acceptedFileTypes={"image/*"}
-                        labelIdle={'Drag & Drop your image or <span class="filepond--label-action">Browse</span>'}
+                        labelIdle={'Перетащите изображение или <span class="filepond--label-action">выберите</span>'}
                     />
                 </Form.Item>
             </Form>
