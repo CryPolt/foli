@@ -6,10 +6,10 @@ import HTTP from '../../../common/helpers/HTTP';
 import Routes from '../../../common/helpers/Routes';
 import Utils from '../../../common/helpers/Utils';
 import { useSelector } from 'react-redux';
-import { 
-    TeamOutlined, 
-    UserAddOutlined, 
-    UserSwitchOutlined, 
+import {
+    TeamOutlined,
+    UserAddOutlined,
+    UserSwitchOutlined,
     ExclamationCircleOutlined
 } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -68,11 +68,11 @@ const wordCloudConfig = {
 };
 
 const StyledCol = styled(Col)`
-text-align: ${props => props.align ? props.align : 'left'};
-@media (max-width: 768px) {
-    text-align: center !important;
-    ${props => props.mobilePaddingTop && `padding-top: ${props.mobilePaddingTop};`}
-}
+    text-align: ${props => props.align ? props.align : 'left'};
+    @media (max-width: 768px) {
+        text-align: center !important;
+        ${props => props.mobilePaddingTop && `padding-top: ${props.mobilePaddingTop};`}
+    }
 `;
 
 const Visitors = () => {
@@ -115,72 +115,72 @@ const Visitors = () => {
                 endDate: date.endDate,
             }
         })
-        .then(response => {
-            Utils.handleSuccessResponse(response, () => {
-                const result = response.data.payload;
+            .then(response => {
+                Utils.handleSuccessResponse(response, () => {
+                    const result = response.data.payload;
 
-                if (result) {
-                    //visitors
-                    setVisitorsData({
-                        total: parseInt(result.visitors.total),
-                        new: parseInt(result.visitors.new),
-                        old: parseInt(result.visitors.old)
-                    });
+                    if (result) {
+                        //visitors
+                        setVisitorsData({
+                            total: parseInt(result.visitors.total),
+                            new: parseInt(result.visitors.new),
+                            old: parseInt(result.visitors.old)
+                        });
 
-                    //location
-                    let locationArray = [];
-                    result.location.forEach(element => {
-                        locationArray.push({
-                            name: element.location,
-                            value: parseInt(element.total)
-                        })
-                    });
-                    setLocationData(locationArray);
+                        //location
+                        let locationArray = [];
+                        result.location.forEach(element => {
+                            locationArray.push({
+                                name: element.location,
+                                value: parseInt(element.total)
+                            })
+                        });
+                        setLocationData(locationArray);
 
-                    //device
-                    let deviceArray = [];
+                        //device
+                        let deviceArray = [];
 
-                    if (parseInt(result.device.desktop)) {
-                        deviceArray.push({
-                            name: "Desktop",
-                            value: parseInt(result.device.desktop)
-                        })
+                        if (parseInt(result.device.desktop)) {
+                            deviceArray.push({
+                                name: "Desktop",
+                                value: parseInt(result.device.desktop)
+                            })
+                        }
+
+                        if (parseInt(result.device.mobile)) {
+                            deviceArray.push({
+                                name: "Mobile",
+                                value: parseInt(result.device.mobile)
+                            })
+                        }
+
+                        setDeviceData(deviceArray);
+
+                        //browser
+                        let browserArray = [];
+                        result.browser.forEach(element => {
+                            browserArray.push({
+                                name: element.browser,
+                                value: parseInt(element.total)
+                            })
+                        });
+                        setBrowserData(browserArray);
+
+                        //platform
+                        let platformArray = [];
+                        result.platform.forEach(element => {
+                            platformArray.push({
+                                name: element.platform,
+                                value: parseInt(element.total)
+                            })
+                        });
+                        setPlatformData(platformArray);
                     }
-                    
-                    if (parseInt(result.device.mobile)) {
-                        deviceArray.push({
-                            name: "Mobile",
-                            value: parseInt(result.device.mobile)
-                        })
-                    }
-
-                    setDeviceData(deviceArray);
-
-                    //browser
-                    let browserArray = [];
-                    result.browser.forEach(element => {
-                        browserArray.push({
-                            name: element.browser,
-                            value: parseInt(element.total)
-                        })
-                    });
-                    setBrowserData(browserArray);
-
-                    //platform
-                    let platformArray = [];
-                    result.platform.forEach(element => {
-                        platformArray.push({
-                            name: element.platform,
-                            value: parseInt(element.total)
-                        })
-                    });
-                    setPlatformData(platformArray);
-                }
-            });
-        })
-        .catch(error => {
-            Utils.handleException(error);
-        }).finally(() => {
+                });
+            })
+            .catch(error => {
+                Utils.handleException(error);
+            }).finally(() => {
             setLoading(false);
         });
     }
@@ -217,33 +217,33 @@ const Visitors = () => {
                     setLoading(true);
 
                     HTTP.delete(Routes.api.admin.visitorsStats)
-                    .then(response => {
-                        Utils.handleSuccessResponse(response, () => {
-                            //visitors
-                            setVisitorsData({
-                                total: 0,
-                                new: 0,
-                                old: 0
+                        .then(response => {
+                            Utils.handleSuccessResponse(response, () => {
+                                //visitors
+                                setVisitorsData({
+                                    total: 0,
+                                    new: 0,
+                                    old: 0
+                                });
+
+                                //location
+                                setLocationData([]);
+
+                                //device
+                                setDeviceData([]);
+
+                                //browser
+                                setBrowserData([]);
+
+                                //platform
+                                setPlatformData([]);
+
+                                Utils.showNotification(response.data.message, 'success', false);
                             });
-
-                            //location
-                            setLocationData([]);
-
-                            //device
-                            setDeviceData([]);
-
-                            //browser
-                            setBrowserData([]);
-
-                            //platform
-                            setPlatformData([]);
-
-                            Utils.showNotification(response.data.message, 'success', false);
-                        });
-                    })
-                    .catch((error) => {
-                        Utils.handleException(error);
-                    }).finally(() => {
+                        })
+                        .catch((error) => {
+                            Utils.handleException(error);
+                        }).finally(() => {
                         setLoading(false);
                     });
                 },
@@ -264,7 +264,7 @@ const Visitors = () => {
                         marginBottom: 24,
                     }}
                 >
-                    <Card 
+                    <Card
                         bordered={false}
                         hoverable
                         style={{cursor: 'default'}}
@@ -275,21 +275,21 @@ const Visitors = () => {
                                 <DatePicker.RangePicker
                                     bordered={false}
                                     ranges={{
-                                        "Today": [moment(), moment()],
-                                        "Yesterday": [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
-                                        "This Week": [moment().startOf('week'), moment().endOf('week')],
-                                        "Last 7 Days": [moment().subtract(7, 'day'), moment()],
-                                        "This Month": [moment().startOf('month'), moment().endOf('month')],
-                                        "Last Month": [moment().subtract(1,'months').startOf('month'), moment().subtract(1,'months').endOf('month')],
-                                        "Last 30 Days": [moment().subtract(30, 'day'), moment()],
+                                        "Сегодня": [moment(), moment()],
+                                        "Вчера": [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+                                        "Эта неделя": [moment().startOf('week'), moment().endOf('week')],
+                                        "Последние 7 дней": [moment().subtract(7, 'day'), moment()],
+                                        "Этот месяц": [moment().startOf('month'), moment().endOf('month')],
+                                        "Прошлый месяц": [moment().subtract(1,'months').startOf('month'), moment().subtract(1,'months').endOf('month')],
+                                        "Последние 30 дней": [moment().subtract(30, 'day'), moment()],
                                     }}
                                     onChange={datePickerOnChange}
                                 />
                             </StyledCol>
                             <StyledCol md={12} sm={12} xs={24} align={'right'} mobilePaddingTop={'1rem'}>
                                 <Space>
-                                    <Button type="primary" danger onClick={showResetConfirm} disabled={loading}>Reset All Stats</Button>
-                                    <Button type="primary" onClick={loadData} disabled={loading}>Refresh</Button>
+                                    <Button type="primary" danger onClick={showResetConfirm} disabled={loading}>Сбросить все статистики</Button>
+                                    <Button type="primary" onClick={loadData} disabled={loading}>Обновить</Button>
                                 </Space>
                             </StyledCol>
                         </Row>
@@ -318,7 +318,7 @@ const Visitors = () => {
                         >
                             <Card
                                 style={{cursor: 'default'}}
-                                title={"Count"}
+                                title={"Количество"}
                                 loading={loading}
                                 bordered={false}
                                 hoverable
@@ -328,7 +328,7 @@ const Visitors = () => {
                                     <Col md={8} sm={12} xs={24}>
                                         <Statistic
                                             className="text-center"
-                                            title={'Total Visitors'}
+                                            title={'Всего посетителей'}
                                             value={visitorsData.total}
                                             prefix={<TeamOutlined />}
                                         />
@@ -336,7 +336,7 @@ const Visitors = () => {
                                     <Col md={8} sm={12} xs={24}>
                                         <Statistic
                                             className="text-center"
-                                            title={'New Visitors'}
+                                            title={'Новых посетителей'}
                                             value={visitorsData.new}
                                             prefix={<UserAddOutlined />}
                                         />
@@ -344,7 +344,7 @@ const Visitors = () => {
                                     <Col md={8} sm={12} xs={24}>
                                         <Statistic
                                             className="text-center"
-                                            title={'Returning Visitors'}
+                                            title={'Старых посетителей'}
                                             value={visitorsData.old}
                                             prefix={<UserSwitchOutlined />}
                                         />
@@ -364,52 +364,20 @@ const Visitors = () => {
                         >
                             <Card
                                 style={{cursor: 'default'}}
-                                title={"Platform"}
-                                loading={loading}
+                                title={'Местоположение'}
                                 bordered={false}
                                 hoverable
                                 className="z-shadow"
                             >
-                                {
-                                    platformData.length !== 0 ? (
-                                        <Pie 
-                                            {...pieConfig} 
-                                            data={platformData} 
-                                        />
-                                    ) : (
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                                    )
-                                }
-                            </Card>
-                        </Col>
-                        <Col
-                            xl={24}
-                            lg={24}
-                            md={24}
-                            sm={24}
-                            xs={24}
-                            style={{
-                                marginBottom: 24,
-                            }}
-                        >
-                            <Card
-                                style={{cursor: 'default'}}
-                                title={"Browser"}
-                                loading={loading}
-                                bordered={false}
-                                hoverable
-                                className="z-shadow"
-                            >
-                                {
-                                    browserData.length !== 0 ? (
-                                        <Pie 
-                                            {...pieConfig} 
-                                            data={browserData} 
-                                        />
-                                    ) : (
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                                    )
-                                }
+                                {locationData && locationData.length ?
+                                    <Pie
+                                        {...pieConfig}
+                                        data={locationData}
+                                    />
+                                    : <Empty
+                                        className="p-5"
+                                        description="Данные не найдены"
+                                    />}
                             </Card>
                         </Col>
                     </Row>
@@ -437,19 +405,21 @@ const Visitors = () => {
                         >
                             <Card
                                 style={{cursor: 'default'}}
-                                title={"Location"}
-                                loading={loading}
+                                title={'Устройства'}
                                 bordered={false}
                                 hoverable
+                                loading={loading}
                                 className="z-shadow"
                             >
-                                {
-                                    locationData.length !== 0 ? (
-                                        <WordCloud {...wordCloudConfig} data={locationData} height={391}/>
-                                    ) : (
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                                    )
-                                }
+                                {deviceData && deviceData.length ?
+                                    <Pie
+                                        {...pieConfig}
+                                        data={deviceData}
+                                    />
+                                    : <Empty
+                                        className="p-5"
+                                        description="Данные не найдены"
+                                    />}
                             </Card>
                         </Col>
                         <Col
@@ -464,29 +434,57 @@ const Visitors = () => {
                         >
                             <Card
                                 style={{cursor: 'default'}}
-                                title={"Device"}
-                                loading={loading}
+                                title={'Браузеры'}
                                 bordered={false}
                                 hoverable
+                                loading={loading}
                                 className="z-shadow"
                             >
-                                {
-                                    deviceData.length !== 0 ? (
-                                        <Pie 
-                                            {...pieConfig} 
-                                            data={deviceData} 
-                                        />
-                                    ) : (
-                                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                                    )
-                                }
+                                {browserData && browserData.length ?
+                                    <WordCloud
+                                        {...wordCloudConfig}
+                                        data={browserData}
+                                    />
+                                    : <Empty
+                                        className="p-5"
+                                        description="Данные не найдены"
+                                    />}
+                            </Card>
+                        </Col>
+                        <Col
+                            xl={24}
+                            lg={24}
+                            md={24}
+                            sm={24}
+                            xs={24}
+                            style={{
+                                marginBottom: 24,
+                            }}
+                        >
+                            <Card
+                                style={{cursor: 'default'}}
+                                title={'Платформы'}
+                                bordered={false}
+                                hoverable
+                                loading={loading}
+                                className="z-shadow"
+                            >
+                                {platformData && platformData.length ?
+                                    <WordCloud
+                                        {...wordCloudConfig}
+                                        data={platformData}
+                                    />
+                                    : <Empty
+                                        className="p-5"
+                                        description="Данные не найдены"
+                                    />}
                             </Card>
                         </Col>
                     </Row>
                 </Col>
             </Row>
         </React.Fragment>
-    )
+    );
 }
 
 export default Visitors;
