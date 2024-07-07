@@ -15,7 +15,7 @@ const ForgetPassword = () => {
     let location = useLocation();
 
     useEffect(() => {
-        document.title = `Forget Password - ${siteName}`;
+        document.title = `Забыли пароль - ${siteName}`;
     }, [])
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const ForgetPassword = () => {
             return;
         }
         setLoading(true);
-        
+
         axios.post(Routes.api.admin.forgetPassword, {
             email: values.email,
         })
@@ -50,7 +50,7 @@ const ForgetPassword = () => {
 
     return (
         <React.Fragment>
-            <AuthLayout title={'FORGET PASSWORD'}>
+            <AuthLayout title={'Забыли пароль'}>
                 <Form
                     name="forgetPassword"
                     onFinish={onSubmit}
@@ -60,11 +60,11 @@ const ForgetPassword = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your email'
+                                message: 'Пожалуйста введите ваш email'
                             },
                             {
                                 type: 'email',
-                                message: 'Invalid email address'
+                                message: 'Не валидный email'
                             }
                         ]}
                     >
@@ -73,11 +73,11 @@ const ForgetPassword = () => {
                     <Form.Item>
                         <Space direction="vertical" style={{width: '100%'}}>
                             <Button type="primary" htmlType="submit" block loading={loading}>
-                                Send Reset Email
+                                Отправить письмо восстановление
                             </Button>
-                            
+
                             <Button type="default" htmlType="button" block disabled={loading}>
-                                <Link to={Routes.web.admin.login}>Back to Login</Link>
+                                <Link to={Routes.web.admin.login}>Вернуться на страницу Авторизации</Link>
                             </Button>
                         </Space>
                     </Form.Item>

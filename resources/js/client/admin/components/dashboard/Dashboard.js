@@ -118,10 +118,7 @@ const Dashboard = () => {
                 description: <React.Fragment>
                     <Space direction="vertical" size="middle">
                         <div className="text-center">
-                            Show your ❤️ and support by giving a ⭐️ on <a target="_blank" rel="noreferrer" href="https://github.com/arifszn/ezfolio">GitHub</a>.
-                        </div>
-                        <div className="text-center">
-                            <a href={Routes.web.frontend.home} target="_blank" rel="noreferrer">Visit Front Panel</a>
+                            <a href={Routes.web.frontend.home} target="_blank" rel="noreferrer">Посмотрите визуальную страницу</a>
                         </div>
                     </Space>
                 </React.Fragment>,
@@ -147,7 +144,7 @@ const Dashboard = () => {
     const loadData = (_loading = true) => {
         setLoading(_loading);
 
-        HTTP.get(Routes.api.admin.stats, {   
+        HTTP.get(Routes.api.admin.stats, {
             params: {
                 todayStartDate: todayStartDateUtc,
                 todayEndDate: todayEndDateUtc,
@@ -234,7 +231,7 @@ const Dashboard = () => {
     return (
         <React.Fragment>
             <Row gutter={24}>
-                <Col 
+                <Col
                     xl={24}
                     lg={24}
                     md={24}
@@ -242,7 +239,7 @@ const Dashboard = () => {
                     xs={24}
                 >
                     <Row gutter={24}>
-                        <Col 
+                        <Col
                             xl={6}
                             lg={6}
                             md={12}
@@ -250,16 +247,16 @@ const Dashboard = () => {
                             xs={24}
                             style={{marginBottom: 24}}
                         >
-                            <StatCard 
-                                link={Routes.web.admin.portfolioSkills} 
+                            <StatCard
+                                link={Routes.web.admin.portfolioSkills}
                                 loading={loading}
                                 icon={<Icon component={GoKeyboard}/>}
-                                color={colors.skill} 
-                                title='Skill' 
+                                color={colors.skill}
+                                title='Skill'
                                 number={skillData.total}
                             />
                         </Col>
-                        <Col 
+                        <Col
                             xl={6}
                             lg={6}
                             md={12}
@@ -267,16 +264,16 @@ const Dashboard = () => {
                             xs={24}
                             style={{marginBottom: 24}}
                         >
-                            <StatCard 
-                                link={Routes.web.admin.portfolioEducation} 
+                            <StatCard
+                                link={Routes.web.admin.portfolioEducation}
                                 loading={loading}
                                 icon={<Icon component={GiSecretBook}/>}
-                                color={colors.education} 
-                                title='Education' 
+                                color={colors.education}
+                                title='Обучение'
                                 number={educationData.total}
                             />
                         </Col>
-                        <Col 
+                        <Col
                             xl={6}
                             lg={6}
                             md={12}
@@ -284,16 +281,16 @@ const Dashboard = () => {
                             xs={24}
                             style={{marginBottom: 24}}
                         >
-                            <StatCard 
-                                link={Routes.web.admin.portfolioExperiences} 
+                            <StatCard
+                                link={Routes.web.admin.portfolioExperiences}
                                 loading={loading}
                                 icon={<Icon component={BsBriefcase}/>}
-                                color={colors.experience} 
-                                title='Experience' 
+                                color={colors.experience}
+                                title='Опыт'
                                 number={experienceData.total}
                             />
                         </Col>
-                        <Col 
+                        <Col
                             xl={6}
                             lg={6}
                             md={12}
@@ -301,18 +298,18 @@ const Dashboard = () => {
                             xs={24}
                             style={{marginBottom: 24}}
                         >
-                            <StatCard 
-                                link={Routes.web.admin.portfolioProjects} 
+                            <StatCard
+                                link={Routes.web.admin.portfolioProjects}
                                 loading={loading}
                                 icon={<Icon component={BiArchive}/>}
-                                color={colors.project} 
-                                title='Project' 
+                                color={colors.project}
+                                title='Проекты'
                                 number={projectData.total}
                             />
                         </Col>
                     </Row>
                 </Col>
-                <Col 
+                <Col
                     xl={18}
                     lg={18}
                     md={24}
@@ -320,7 +317,7 @@ const Dashboard = () => {
                     xs={24}
                 >
                     <Row gutter={24}>
-                        <Col 
+                        <Col
                             xl={8}
                             lg={10}
                             md={12}
@@ -328,16 +325,16 @@ const Dashboard = () => {
                             xs={24}
                             style={{marginBottom: 24}}
                         >
-                            <StatCard 
-                                link={Routes.web.admin.portfolioServices} 
+                            <StatCard
+                                link={Routes.web.admin.portfolioServices}
                                 loading={loading}
                                 icon={<Icon component={RiServiceLine}/>}
-                                color={colors.service} 
-                                title='Service' 
+                                color={colors.service}
+                                title='Сервисы'
                                 number={servicesData.total}
                             />
                         </Col>
-                        <Col 
+                        <Col
                             xl={16}
                             lg={14}
                             md={12}
@@ -354,7 +351,7 @@ const Dashboard = () => {
                             >
                                 <Row>
                                     <Col md={24} sm={24} xs={24} style={{textAlign: 'center'}}>
-                                        <Text type={'secondary'}>Visitor Trend</Text>
+                                        <Text type={'secondary'}>Динамика Посетителей</Text>
                                     </Col>
                                     <Col md={24} sm={24} xs={24} style={{textAlign: 'center'}}>
                                         <TinyArea
@@ -387,15 +384,15 @@ const Dashboard = () => {
                             >
                                 <Row>
                                     <Col md={24} sm={24} xs={24} style={{textAlign: 'center', paddingBottom: '14px'}}>
-                                        <Text type={'secondary'}>Visitor</Text>
+                                        <Text type={'secondary'}>Посетители</Text>
                                     </Col>
                                     <Col md={6} sm={24} xs={24}>
                                         <StatCard
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={AiOutlineTeam}/>}
-                                            color={colors.visitor} 
-                                            title='Total' 
+                                            color={colors.visitor}
+                                            title='Всего'
                                             number={visitorData.total}
                                         />
                                     </Col>
@@ -404,8 +401,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={AiOutlineTeam}/>}
-                                            color={colors.visitor} 
-                                            title='This Month' 
+                                            color={colors.visitor}
+                                            title='В этом месяце'
                                             number={visitorData.thisMonth}
                                         />
                                     </Col>
@@ -414,8 +411,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={AiOutlineTeam}/>}
-                                            color={colors.visitor} 
-                                            title='This Week' 
+                                            color={colors.visitor}
+                                            title='На этой недели'
                                             number={visitorData.thisWeek}
                                         />
                                     </Col>
@@ -424,8 +421,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={AiOutlineTeam}/>}
-                                            color={colors.visitor} 
-                                            title='Today' 
+                                            color={colors.visitor}
+                                            title='Сегодня'
                                             number={visitorData.today}
                                         />
                                     </Col>
@@ -451,15 +448,15 @@ const Dashboard = () => {
                             >
                                 <Row>
                                     <Col md={24} sm={24} xs={24} style={{textAlign: 'center', paddingBottom: '14px'}}>
-                                        <Text type={'secondary'}>Message</Text>
+                                        <Text type={'secondary'}>Сообщения</Text>
                                     </Col>
                                     <Col md={6} sm={24} xs={24}>
                                         <StatCard
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={RiMessage3Line}/>}
-                                            color={colors.message} 
-                                            title='Total' 
+                                            color={colors.message}
+                                            title='Всего'
                                             number={messageData.total}
                                         />
                                     </Col>
@@ -468,8 +465,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={RiMessage3Line}/>}
-                                            color={colors.message} 
-                                            title='This Month' 
+                                            color={colors.message}
+                                            title='В этом месяце'
                                             number={messageData.thisMonth}
                                         />
                                     </Col>
@@ -478,8 +475,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={RiMessage3Line}/>}
-                                            color={colors.message} 
-                                            title='This Week' 
+                                            color={colors.message}
+                                            title='На этой недели'
                                             number={messageData.thisWeek}
                                         />
                                     </Col>
@@ -488,8 +485,8 @@ const Dashboard = () => {
                                             isCard={false}
                                             loading={loading}
                                             icon={<Icon component={RiMessage3Line}/>}
-                                            color={colors.message} 
-                                            title='Today' 
+                                            color={colors.message}
+                                            title='Сегодня'
                                             number={messageData.today}
                                         />
                                     </Col>
@@ -498,7 +495,7 @@ const Dashboard = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col 
+                <Col
                     xl={6}
                     lg={6}
                     md={24}
@@ -540,7 +537,7 @@ const Dashboard = () => {
                             >
                                 <Card.Meta
                                     title={<React.Fragment><small>{currentTemplate && currentTemplate.title}</small></React.Fragment>}
-                                    description={<React.Fragment><small>Change Template</small></React.Fragment>}
+                                    description={<React.Fragment><small>Сменить шаблон</small></React.Fragment>}
                                 />
                             </Card>
                         </Col>
@@ -577,15 +574,15 @@ const Dashboard = () => {
                                     ) : (
                                         <Spin><WallpaperLoading/></Spin>
                                     )
-                                    
+
                                 }
                             >
                                 <Card.Meta
-                                    title={<React.Fragment><small>Daily Wallpaper {demoMode && (
+                                    title={<React.Fragment><small>Обои сегодня {demoMode && (
                                         <a href="https://github.com/arifszn/reddit-image-fetcher" target="_blank" rel="noreferrer"><InfoCircleOutlined style={{paddingLeft: '2px', color: 'rgba(0, 0, 0, 0.45)'}}/></a>
                                     )}</small></React.Fragment>}
                                     description={
-                                        <div onClick={getWallpaper} style={{cursor: 'pointer'}}><small>Get Another</small></div>
+                                        <div onClick={getWallpaper} style={{cursor: 'pointer'}}><small>Получить другие</small></div>
                                     }
                                 />
                             </Card>

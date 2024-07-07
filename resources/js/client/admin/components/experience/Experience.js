@@ -23,8 +23,8 @@ const Experience = (props) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            id: props.itemToEdit ? props.itemToEdit.id : '', 
-            company: props.itemToEdit ? props.itemToEdit.company : '', 
+            id: props.itemToEdit ? props.itemToEdit.id : '',
+            company: props.itemToEdit ? props.itemToEdit.company : '',
             period: props.itemToEdit ? props.itemToEdit.period : '',
             position: props.itemToEdit ? props.itemToEdit.position : '',
             details: props.itemToEdit ? props.itemToEdit.details : ''
@@ -58,35 +58,35 @@ const Experience = (props) => {
 
     const handleOk = () => {
         form
-        .validateFields()
-        .then((values) => {
-            
-            //save form
-            setLoading(true);
+            .validateFields()
+            .then((values) => {
 
-            HTTP[values.id ? 'put' : 'post'](Routes.api.admin.experiences+(values.id ? `/${values.id}` : '' ), {
-                id: values.id,
-                company: values.company,
-                position: values.position,
-                details: values.details,
-                period: values.period,
-            })
-            .then(response => {
-                Utils.handleSuccessResponse(response, () => {
-                    form.resetFields();
-                    Utils.showNotification(response.data.message, 'success');
-                    props.submitCallback();
+                // Сохранить форму
+                setLoading(true);
+
+                HTTP[values.id ? 'put' : 'post'](Routes.api.admin.experiences+(values.id ? `/${values.id}` : '' ), {
+                    id: values.id,
+                    company: values.company,
+                    position: values.position,
+                    details: values.details,
+                    period: values.period,
                 })
+                    .then(response => {
+                        Utils.handleSuccessResponse(response, () => {
+                            form.resetFields();
+                            Utils.showNotification(response.data.message, 'success');
+                            props.submitCallback();
+                        })
+                    })
+                    .catch((error) => {
+                        Utils.handleException(error);
+                    }).finally(() => {
+                    setLoading(false);
+                });
             })
-            .catch((error) => {
-                Utils.handleException(error);
-            }).finally(() => {
-                setLoading(false);
+            .catch((info) => {
+                console.log('Ошибка валидации:', info);
             });
-        })
-        .catch((info) => {
-            console.log('Validate Failed:', info);
-        });
     }
 
     return (
@@ -104,10 +104,10 @@ const Experience = (props) => {
                     }}
                 >
                     <Button disabled={componentLoading} onClick={handleClose} style={{ marginRight: 8 }}>
-                        Cancel
+                        Отмена
                     </Button>
                     <Button disabled={componentLoading} onClick={handleOk} type="primary" loading={loading}>
-                        Save
+                        Сохранить
                     </Button>
                 </div>
             }
@@ -124,33 +124,33 @@ const Experience = (props) => {
                     </Form.Item>
                     <Form.Item
                         name="company"
-                        label="Company"
+                        label="Компания"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input the name of company',
+                                message: 'Введите название компании',
                             },
                         ]}
                     >
-                        <Input placeholder="Enter Company"/>
+                        <Input placeholder="Введите название компании"/>
                     </Form.Item>
-                    <Form.Item name="period" label="Period">
-                        <Input placeholder="Enter Period"/>
+                    <Form.Item name="period" label="Период">
+                        <Input placeholder="Введите период"/>
                     </Form.Item>
                     <Form.Item
                         name="position"
-                        label="Position"
+                        label="Должность"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input position',
+                                message: 'Введите должность',
                             },
                         ]}
                     >
-                        <Input placeholder="Enter Position"/>
+                        <Input placeholder="Введите должность"/>
                     </Form.Item>
-                    <Form.Item name="details" label="Details">
-                        <Input.TextArea rows={4} placeholder="Enter Details"/>
+                    <Form.Item name="details" label="Детали">
+                        <Input.TextArea rows={4} placeholder="Введите детали"/>
                     </Form.Item>
                 </Form>
             </Spin>

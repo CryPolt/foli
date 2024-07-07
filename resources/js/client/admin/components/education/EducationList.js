@@ -18,7 +18,7 @@ const EducationList = () => {
 
     const columns = [
         {
-            title: 'Institution',
+            title: 'Учебное заведение',
             dataIndex: 'institution',
             search: true,
             sorter: true,
@@ -26,7 +26,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'Period',
+            title: 'Период',
             dataIndex: 'period',
             sorter: true,
             search: true,
@@ -34,7 +34,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'Degree',
+            title: 'Степень',
             dataIndex: 'degree',
             sorter: true,
             search: true,
@@ -42,7 +42,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'CGPA',
+            title: 'Средний балл',
             dataIndex: 'cgpa',
             sorter: true,
             search: true,
@@ -50,7 +50,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'Department',
+            title: 'Факультет',
             dataIndex: 'department',
             sorter: true,
             search: true,
@@ -58,7 +58,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'Thesis',
+            title: 'Дипломная работа',
             dataIndex: 'thesis',
             sorter: true,
             search: true,
@@ -66,7 +66,7 @@ const EducationList = () => {
             ellipsis:true
         },
         {
-            title: 'Option',
+            title: 'Опции',
             valueType: 'option',
             align: 'center',
             width: 170,
@@ -74,7 +74,7 @@ const EducationList = () => {
             render: (text, row) => [
                 <Dropdown key="0" overlay={menu(row)} trigger={['click']}>
                     <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                        Option <DownOutlined />
+                        Опции <DownOutlined />
                     </a>
                 </Dropdown>,
             ],
@@ -88,7 +88,7 @@ const EducationList = () => {
         });
         confirm({
             confirmLoading: loading,
-            title: `Do you want to delete ${ids.length == 1 ? 'this' : 'these'} ${ids.length == 1 ? 'item' : 'items'}?`,
+            title: `Вы уверены, что хотите удалить ${ids.length == 1 ? 'этот' : 'эти'} ${ids.length == 1 ? 'элемент' : 'элементы'}?`,
             icon: <ExclamationCircleOutlined />,
             mask: true,
             onOk() {
@@ -98,15 +98,15 @@ const EducationList = () => {
                         ids: ids
                     }
                 })
-                .then(response => {
-                    Utils.handleSuccessResponse(response, () => {
-                        Utils.showTinyNotification(response.data.message, 'success');
-                        actionRef.current?.reloadAndRest();
-                    });
-                })
-                .catch((error) => {
-                    Utils.handleException(error);
-                }).finally(() => {
+                    .then(response => {
+                        Utils.handleSuccessResponse(response, () => {
+                            Utils.showTinyNotification(response.data.message, 'success');
+                            actionRef.current?.reloadAndRest();
+                        });
+                    })
+                    .catch((error) => {
+                        Utils.handleException(error);
+                    }).finally(() => {
                     setLoading(false);
                 });
             },
@@ -115,22 +115,22 @@ const EducationList = () => {
 
     const menu = (row) => (
         <Menu>
-            <Menu.Item 
-                key="0" 
+            <Menu.Item
+                key="0"
                 onClick={() => {
                     setItemToEdit(row);
                     setModalVisible(true);
                 }}
                 icon={<EditOutlined />}
             >
-                Edit
+                Редактировать
             </Menu.Item>
-            <Menu.Item 
+            <Menu.Item
                 key="1"
                 onClick={() => showConfirm([row])}
                 icon={<DeleteOutlined />}
             >
-                Delete
+                Удалить
             </Menu.Item>
         </Menu>
     );
@@ -140,18 +140,18 @@ const EducationList = () => {
             <PageWrapper>
                 <PageHeader
                     style={{padding: 0}}
-                    title="Education"
+                    title="Образование"
                     subTitle={
                         <Typography.Text
                             style={{ width: '100%', color: 'grey' }}
-                            ellipsis={{ tooltip: 'Your education history' }}
+                            ellipsis={{ tooltip: 'Ваша история образования' }}
                         >
-                            Your education history
+                            Ваша история образования
                         </Typography.Text>
                     }
                     extra={[
                         <Button key="add" type="primary" onClick={() => setModalVisible(true)}>
-                            Add New
+                            Добавить новое
                         </Button>,
                     ]}
                 >
@@ -171,21 +171,21 @@ const EducationList = () => {
                         tableAlertRender={({ selectedRowKeys, onCleanSelected }) => (
                             <Space>
                                 <span>
-                                    Selected {selectedRowKeys.length} items
+                                    Выбрано {selectedRowKeys.length} элементов
                                     <a
                                         style={{
                                             marginLeft: 8,
                                         }}
                                         onClick={onCleanSelected}
                                     >
-                                        <strong>Cancel Selection</strong>
+                                        <strong>Отменить выбор</strong>
                                     </a>
                                 </span>
                             </Space>
                         )}
                         tableAlertOptionRender={({ selectedRows }) => (
                             <Space>
-                                <Button type="primary" onClick={() => showConfirm(selectedRows)}>Batch Deletion</Button>
+                                <Button type="primary" onClick={() => showConfirm(selectedRows)}>Массовое удаление</Button>
                             </Space>
                         )}
                         actionRef={actionRef}
@@ -201,9 +201,9 @@ const EducationList = () => {
                                     return response.data.payload
                                 })
                             })
-                            .catch(error => {
-                                Utils.handleException(error);
-                            })
+                                .catch(error => {
+                                    Utils.handleException(error);
+                                })
                         }}
                         dateFormatter="string"
                         search={false}
@@ -217,7 +217,7 @@ const EducationList = () => {
             {
                 modalVisible && (
                     <Education
-                        title={itemToEdit ? 'Edit Education History' : 'Add Education History'}
+                        title={itemToEdit ? 'Редактировать историю образования' : 'Добавить историю образования'}
                         itemToEdit={itemToEdit}
                         visible={modalVisible}
                         handleCancel={

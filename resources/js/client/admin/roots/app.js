@@ -5,7 +5,7 @@ import enUSIntl from 'antd/lib/locale/en_US';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Routes from '../../common/helpers/Routes';
 import SuspenseErrorBoundary from '../../common/components/SuspenseErrorBoundary';
-import {ErrorBoundaryFallbackUI} from '../../common/components/ErrorBoundaryFallbackUI';
+import { ErrorBoundaryFallbackUI } from '../../common/components/ErrorBoundaryFallbackUI';
 import '../../common/assets/css/app.css';
 import ReactRoutes from '../../common/helpers/ReactRoutes';
 import { Provider, useDispatch } from 'react-redux';
@@ -23,106 +23,91 @@ const store = ConfigureStore();
 
 /**
  * Remove an element by showing fade out effect
- * 
- * @param Element el 
+ *
+ * @param Element el
  * @param int speed in millisecond
  */
 const fadeoutAndRemoveElement = (el, speed) => {
-    var seconds = speed/1000;
-    el.style.transition = "opacity "+seconds+"s ease";
-
+    var seconds = speed / 1000;
+    el.style.transition = `opacity ${seconds}s ease`;
     el.style.opacity = 0;
-    setTimeout(function() {
+    setTimeout(() => {
         el.parentNode.removeChild(el);
     }, speed);
 }
 
-/**
- * public routes
- */
-const publicRoutes = () => {
-    return ReactRoutes.admin.filter(route => route.private === false).map((route, index) => (
-        <Route key={index} exact={route.exact} path={route.path}>
-            <route.component fallback={<LazyLoadingFallbackUi/>}/>
-        </Route>
-    ));
-}
-
-/**
- * private routes
- */
-const privateRoutes = () => {
-    return ReactRoutes.admin.filter(route => route.private === true).map((route, index) => (
-        <Route key={index} exact={route.exact} path={route.path}>
-            <route.component fallback={<LazyLoadingFallbackUi spinner={true}/>}/>
-        </Route>
-    ));
-}
-
-/**
- * Root component
- */
 const App = () => {
     const dispatch = useDispatch();
 
-    /**
-     * Below settings are coming from 
-     * resources/views/admin/app.blade.php
-     * line 17. Ideally to get the settings, a request should be made to api.
-     * 
-     * But to keep it simple, we are passing the values in a constant which is
-     * already declared in that mentioned file.
-     */
+    // Replace this with your actual settings retrieval logic
     // eslint-disable-next-line no-undef
     let mySettings = settings;
 
-    const apiToken = (localStorage.getItem("apiToken") !== 'undefined' && localStorage.getItem("apiToken") !== null) ? localStorage.getItem("apiToken") : null;
-    
-    dispatch(initializeGlobalState({
-        apiToken: apiToken,
-        accentColor: mySettings.accentColor,
-        shortMenu: mySettings.shortMenu,
-        menuLayout: mySettings.menuLayout,
-        menuColor: mySettings.menuColor,
-        navColor: mySettings.navColor,
-        siteName: mySettings.siteName,
-        logo: mySettings.logo,
-        favicon: mySettings.favicon,
-        avatar: mySettings.avatar,
-        demoMode: mySettings.demoMode,
-        cover: mySettings.cover,
-    }));
+    const apiToken = localStorage.getItem('apiToken') || null;
 
-    useEffect(()=> {
-        //remove preloader
-        let preloader = document.getElementById("szn-preloader");
-        
+    useEffect(() => {
+        dispatch(
+            initializeGlobalState({
+                apiToken: apiToken,
+                accentColor: mySettings.accentColor,
+                shortMenu: mySettings.shortMenu,
+                menuLayout: mySettings.menuLayout,
+                menuColor: mySettings.menuColor,
+                navColor: mySettings.navColor,
+                siteName: mySettings.siteName,
+                logo: mySettings.logo,
+                favicon: mySettings.favicon,
+                avatar: mySettings.avatar,
+                demoMode: mySettings.demoMode,
+                cover: mySettings.cover,
+            })
+        );
+
+        // Remove preloader
+        let preloader = document.getElementById('szn-preloader');
         if (preloader) {
-             fadeoutAndRemoveElement(preloader, 1000);
+            fadeoutAndRemoveElement(preloader, 1000);
         }
 
         Utils.changeAccentColor(mySettings.accentColor);
 
+        // Setup interceptors
         setupInterceptors(store);
-    }, []);
 
-	return (
-		<React.Fragment>
-            <SuspenseErrorBoundary fallback={<ErrorBoundaryFallbackUI/>}>
+        // Cleanup function for useEffect
+        return () => {
+            // Perform cleanup tasks here if needed
+        };
+    }, []); // Empty dependency array means this effect runs only once on mount
+
+    return (
+        <React.Fragment>
+            <SuspenseErrorBoundary fallback={<ErrorBoundaryFallbackUI />}>
                 <ConfigProvider locale={enUSIntl}>
                     <BrowserRouter>
                         <Switch>
-                            
-                            {/* public routes */}
-                            {publicRoutes()}
+                            {/* Public routes */}
+                            {ReactRoutes.admin
+                                .filter((route) => !route.private)
+                                .map((route, index) => (
+                                    <Route key={index} exact={route.exact} path={route.path}>
+                                        <route.component fallback={<LazyLoadingFallbackUi />} />
+                                    </Route>
+                                ))}
 
-                            {/* private routes */}
+                            {/* Private routes */}
                             <PrivateRoute>
                                 <ZLayout>
                                     <Switch>
-                                        {privateRoutes()}
+                                        {ReactRoutes.admin
+                                            .filter((route) => route.private)
+                                            .map((route, index) => (
+                                                <Route key={index} exact={route.exact} path={route.path}>
+                                                    <route.component fallback={<LazyLoadingFallbackUi spinner={true} />} />
+                                                </Route>
+                                            ))}
                                         <Route>
-                                            <NotFound/>
+                                            <NotFound />
                                         </Route>
                                     </Switch>
                                 </ZLayout>
@@ -130,25 +115,24 @@ const App = () => {
 
                             {/* 404 route */}
                             <Route>
-                                <NotFound/>
+                                <NotFound />
                             </Route>
                             <Route path={Routes.web.admin.notFound}>
-                                <NotFound/>
+                                <NotFound />
                             </Route>
-                            
                         </Switch>
                     </BrowserRouter>
                 </ConfigProvider>
             </SuspenseErrorBoundary>
         </React.Fragment>
-	);
-}
+    );
+};
 
 if (document.getElementById('react-root')) {
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App/>
+                <App />
             </Provider>
         </React.StrictMode>,
         document.getElementById('react-root')

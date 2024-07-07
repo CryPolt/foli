@@ -23,8 +23,8 @@ const Education = (props) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            id: props.itemToEdit ? props.itemToEdit.id : '', 
-            institution: props.itemToEdit ? props.itemToEdit.institution : '', 
+            id: props.itemToEdit ? props.itemToEdit.id : '',
+            institution: props.itemToEdit ? props.itemToEdit.institution : '',
             period: props.itemToEdit ? props.itemToEdit.period : '',
             degree: props.itemToEdit ? props.itemToEdit.degree : '',
             cgpa: props.itemToEdit ? props.itemToEdit.cgpa : '',
@@ -60,37 +60,37 @@ const Education = (props) => {
 
     const handleOk = () => {
         form
-        .validateFields()
-        .then((values) => {
-            
-            //save form
-            setLoading(true);
+            .validateFields()
+            .then((values) => {
 
-            HTTP[values.id ? 'put' : 'post'](Routes.api.admin.education+(values.id ? `/${values.id}` : '' ), {
-                id: values.id,
-                institution: values.institution,
-                cgpa: values.cgpa,
-                degree: values.degree,
-                department: values.department,
-                period: values.period,
-                thesis: values.thesis,
-            })
-            .then(response => {
-                Utils.handleSuccessResponse(response, () => {
-                    form.resetFields();
-                    Utils.showNotification(response.data.message, 'success');
-                    props.submitCallback();
+                // Сохранение формы
+                setLoading(true);
+
+                HTTP[values.id ? 'put' : 'post'](Routes.api.admin.education+(values.id ? `/${values.id}` : '' ), {
+                    id: values.id,
+                    institution: values.institution,
+                    cgpa: values.cgpa,
+                    degree: values.degree,
+                    department: values.department,
+                    period: values.period,
+                    thesis: values.thesis,
                 })
+                    .then(response => {
+                        Utils.handleSuccessResponse(response, () => {
+                            form.resetFields();
+                            Utils.showNotification(response.data.message, 'success');
+                            props.submitCallback();
+                        })
+                    })
+                    .catch((error) => {
+                        Utils.handleException(error);
+                    }).finally(() => {
+                    setLoading(false);
+                });
             })
-            .catch((error) => {
-                Utils.handleException(error);
-            }).finally(() => {
-                setLoading(false);
+            .catch((info) => {
+                console.log('Validate Failed:', info);
             });
-        })
-        .catch((info) => {
-            console.log('Validate Failed:', info);
-        });
     }
 
     return (
@@ -108,10 +108,10 @@ const Education = (props) => {
                     }}
                 >
                     <Button disabled={componentLoading} onClick={handleClose} style={{ marginRight: 8 }}>
-                        Cancel
+                        Отмена
                     </Button>
                     <Button disabled={componentLoading} onClick={handleOk} type="primary" loading={loading}>
-                        Save
+                        Сохранить
                     </Button>
                 </div>
             }
@@ -128,30 +128,30 @@ const Education = (props) => {
                     </Form.Item>
                     <Form.Item
                         name="institution"
-                        label="Institution"
+                        label="Учебное заведение"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input the name of institution',
+                                message: 'Пожалуйста, введите название учебного заведения',
                             },
                         ]}
                     >
-                        <Input placeholder="Enter Institution"/>
+                        <Input placeholder="Введите название учебного заведения"/>
                     </Form.Item>
-                    <Form.Item name="period" label="Period">
-                        <Input placeholder="Enter Period"/>
+                    <Form.Item name="period" label="Период обучения">
+                        <Input placeholder="Введите период обучения"/>
                     </Form.Item>
-                    <Form.Item name="degree" label="Degree">
-                        <Input placeholder="Enter Degree"/>
+                    <Form.Item name="degree" label="Степень">
+                        <Input placeholder="Введите степень"/>
                     </Form.Item>
-                    <Form.Item name="cgpa" label="CGPA">
-                        <Input placeholder="Enter CGPA"/>
+                    <Form.Item name="cgpa" label="Средний балл">
+                        <Input placeholder="Введите средний балл"/>
                     </Form.Item>
-                    <Form.Item name="department" label="Department">
-                        <Input placeholder="Enter Department"/>
+                    <Form.Item name="department" label="Факультет">
+                        <Input placeholder="Введите факультет"/>
                     </Form.Item>
-                    <Form.Item name="thesis" label="Thesis">
-                        <Input placeholder="Enter Thesis"/>
+                    <Form.Item name="thesis" label="Дипломная работа">
+                        <Input placeholder="Введите название дипломной работы"/>
                     </Form.Item>
                 </Form>
             </Spin>

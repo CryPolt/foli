@@ -43,14 +43,14 @@ const ZLayout = ({ children }) => {
         });
 
         axios.get(Routes.web.frontend.optimize, {
-            headers: { 
+            headers: {
                 Accept: 'application/json'
             }
         })
         .then(response => {
             Utils.handleSuccessResponse(response, () => {
-                message.success({ 
-                    content: response.data.message, 
+                message.success({
+                    content: response.data.message,
                     key: 'optimize'
                 });
             })
@@ -160,7 +160,7 @@ const ZLayout = ({ children }) => {
     const navigateToPath = (path) => {
         history.push(path);
     }
-    
+
     return (
         <React.Fragment>
             <div

@@ -23,7 +23,7 @@ const Login = () => {
 
         if (demoMode) {
             form.setFieldsValue({
-                email: 'admin@admin.com', 
+                email: 'admin@admin.com',
                 password: 12345
             });
         }
@@ -38,7 +38,7 @@ const Login = () => {
 
     const onSubmit = (values) => {
         setLoading(true);
-        
+
         axios.post(Routes.api.admin.login, {
             email: values.email,
             password: values.password,
@@ -73,11 +73,11 @@ const Login = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your email'
+                                message: 'Пожалуйста введите ваш email'
                             },
                             {
                                 type: 'email',
-                                message: 'Invalid email address'
+                                message: 'Невалидный email'
                             }
                         ]}
                     >
@@ -89,13 +89,13 @@ const Login = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your password'
+                                message: 'Пожалуйста введите ваш пароль'
                             }
                         ]}
                     >
                         <Input.Password
                             prefix={<BsShieldLock/>}
-                            placeholder="Password"
+                            placeholder="Пароль"
                         />
                     </Form.Item>
                     <Form.Item>
@@ -106,7 +106,7 @@ const Login = () => {
                     <Divider style={{marginBottom: '5px'}}/>
                     <Form.Item className="text-center">
                         <Link to={Routes.web.admin.forgetPassword}>
-                            <Typography.Text type="secondary">Forgot password?</Typography.Text>
+                            <Typography.Text type="secondary">Забыли пароль?</Typography.Text>
                         </Link>
                     </Form.Item>
                 </Form>

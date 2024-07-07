@@ -67,7 +67,7 @@ const wordCloudConfig = {
     },
 };
 
-const StyledCol = styled(({ mobilePaddingTop, ...rest }) => <Col {...rest} />)`
+const StyledCol = styled(Col)`
     text-align: ${props => props.align ? props.align : 'left'};
     @media (max-width: 768px) {
         text-align: center !important;
@@ -85,11 +85,11 @@ const Visitors = () => {
         endDate: null,
     });
 
-    const [visitorsData, setVisitorsData] = useState([{
+    const [visitorsData, setVisitorsData] = useState({
         total: 0,
         new: 0,
         old: 0,
-    }]);
+    });
 
     const [locationData, setLocationData] = useState([]);
     const [deviceData, setDeviceData] = useState([]);
@@ -120,60 +120,48 @@ const Visitors = () => {
                     const result = response.data.payload;
 
                     if (result) {
-                        //visitors
+                        // Visitors
                         setVisitorsData({
                             total: parseInt(result.visitors.total),
                             new: parseInt(result.visitors.new),
                             old: parseInt(result.visitors.old)
                         });
 
-                        //location
-                        let locationArray = [];
-                        result.location.forEach(element => {
-                            locationArray.push({
-                                name: element.location,
-                                value: parseInt(element.total)
-                            })
-                        });
+                        // Location
+                        let locationArray = result.location.map(element => ({
+                            name: element.location,
+                            value: parseInt(element.total)
+                        }));
                         setLocationData(locationArray);
 
-                        //device
+                        // Device
                         let deviceArray = [];
-
                         if (parseInt(result.device.desktop)) {
                             deviceArray.push({
                                 name: "Desktop",
                                 value: parseInt(result.device.desktop)
-                            })
+                            });
                         }
-
                         if (parseInt(result.device.mobile)) {
                             deviceArray.push({
                                 name: "Mobile",
                                 value: parseInt(result.device.mobile)
-                            })
+                            });
                         }
-
                         setDeviceData(deviceArray);
 
-                        //browser
-                        let browserArray = [];
-                        result.browser.forEach(element => {
-                            browserArray.push({
-                                name: element.browser,
-                                value: parseInt(element.total)
-                            })
-                        });
+                        // Browser
+                        let browserArray = result.browser.map(element => ({
+                            name: element.browser,
+                            value: parseInt(element.total)
+                        }));
                         setBrowserData(browserArray);
 
-                        //platform
-                        let platformArray = [];
-                        result.platform.forEach(element => {
-                            platformArray.push({
-                                name: element.platform,
-                                value: parseInt(element.total)
-                            })
-                        });
+                        // Platform
+                        let platformArray = result.platform.map(element => ({
+                            name: element.platform,
+                            value: parseInt(element.total)
+                        }));
                         setPlatformData(platformArray);
                     }
                 });
@@ -183,25 +171,18 @@ const Visitors = () => {
             }).finally(() => {
             setLoading(false);
         });
-    }
+    };
 
     const datePickerOnChange = (dates) => {
-        let utcStartDate = null;
-        let utcEndDate = null;
-
-        if (dates) {
-            let withoutUtcStartDate = dates[0];
-            let withoutUtcEndDate = dates[1];
-
-            utcStartDate =  moment.utc(withoutUtcStartDate.startOf('day')).format('YYYY-MM-DD HH:mm:ss');
-            utcEndDate = moment.utc(withoutUtcEndDate.endOf('day')).format('YYYY-MM-DD HH:mm:ss');
+        if (dates && dates.length === 2) {
+            const [start, end] = dates;
+            const utcStartDate = moment.utc(start.startOf('day')).format('YYYY-MM-DD HH:mm:ss');
+            const utcEndDate = moment.utc(end.endOf('day')).format('YYYY-MM-DD HH:mm:ss');
+            setDate({ startDate: utcStartDate, endDate: utcEndDate });
+        } else {
+            setDate({ startDate: null, endDate: null });
         }
-
-        setDate({
-            startDate: utcStartDate,
-            endDate: utcEndDate,
-        });
-    }
+    };
 
     const showResetConfirm = () => {
         if (demoMode) {
@@ -210,7 +191,7 @@ const Visitors = () => {
             confirm({
                 confirmLoading: loading,
                 title: 'Are you sure?',
-                content: 'By pressing OK, all stats related to visitors will be removed. Please proceed with cautions.',
+                content: 'By pressing OK, all stats related to visitors will be removed. Please proceed with caution.',
                 icon: <ExclamationCircleOutlined />,
                 mask: true,
                 onOk() {
@@ -219,37 +200,24 @@ const Visitors = () => {
                     HTTP.delete(Routes.api.admin.visitorsStats)
                         .then(response => {
                             Utils.handleSuccessResponse(response, () => {
-                                //visitors
-                                setVisitorsData({
-                                    total: 0,
-                                    new: 0,
-                                    old: 0
-                                });
-
-                                //location
+                                setVisitorsData({ total: 0, new: 0, old: 0 });
                                 setLocationData([]);
-
-                                //device
                                 setDeviceData([]);
-
-                                //browser
                                 setBrowserData([]);
-
-                                //platform
                                 setPlatformData([]);
-
                                 Utils.showNotification(response.data.message, 'success', false);
                             });
                         })
-                        .catch((error) => {
+                        .catch(error => {
                             Utils.handleException(error);
-                        }).finally(() => {
-                        setLoading(false);
-                    });
+                        })
+                        .finally(() => {
+                            setLoading(false);
+                        });
                 },
             });
         }
-    }
+    };
 
     return (
         <React.Fragment>
@@ -260,50 +228,71 @@ const Visitors = () => {
                     md={24}
                     sm={24}
                     xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
+                    style={{ marginBottom: 24 }}
                 >
                     <Card
                         bordered={false}
                         hoverable
-                        style={{cursor: 'default'}}
+                        style={{ cursor: 'default' }}
                         className="z-shadow"
                     >
                         <Row>
-                            <StyledCol md={12} sm={12} xs={24} align={'left'}>
+                            <StyledCol md={12} sm={12} xs={24} align="left">
                                 <DatePicker.RangePicker
                                     bordered={false}
                                     ranges={{
-                                        "Segodna": [moment(), moment()],
-                                        "Yesterday": [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
-                                        "This Week": [moment().startOf('week'), moment().endOf('week')],
-                                        "Last 7 Days": [moment().subtract(7, 'day'), moment()],
-                                        "This Month": [moment().startOf('month'), moment().endOf('month')],
-                                        "Last 30 Days": [moment().subtract(30, 'day'), moment()],
-                                        "This Year": [moment().startOf('year'), moment().endOf('year')],
-                                        "Last Year": [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+                                        Today: [moment(), moment()],
+                                        Yesterday: [
+                                            moment().subtract(1, 'day'),
+                                            moment().subtract(1, 'day'),
+                                        ],
+                                        'This Week': [
+                                            moment().startOf('week'),
+                                            moment().endOf('week'),
+                                        ],
+                                        'Last 7 Days': [
+                                            moment().subtract(7, 'day'),
+                                            moment(),
+                                        ],
+                                        'This Month': [
+                                            moment().startOf('month'),
+                                            moment().endOf('month'),
+                                        ],
+                                        'Last Month': [
+                                            moment()
+                                                .subtract(1, 'months')
+                                                .startOf('month'),
+                                            moment()
+                                                .subtract(1, 'months')
+                                                .endOf('month'),
+                                        ],
+                                        'Last 30 Days': [
+                                            moment().subtract(30, 'day'),
+                                            moment(),
+                                        ],
                                     }}
-                                    showTime={{
-                                        format: 'HH:mm'
-                                    }}
-                                    format="YYYY-MM-DD"
                                     onChange={datePickerOnChange}
                                 />
                             </StyledCol>
-                            <StyledCol md={12} sm={12} xs={24} align={'right'} mobilePaddingTop={'10px'}>
-                                <Space size={8}>
+                            <StyledCol
+                                md={12}
+                                sm={12}
+                                xs={24}
+                                align="right"
+                            >
+                                <Space>
                                     <Button
-                                        type="danger"
-                                        ghost
+                                        type="primary"
+                                        danger
                                         onClick={showResetConfirm}
+                                        disabled={loading}
                                     >
-                                        Reset
+                                        Reset All Stats
                                     </Button>
                                     <Button
                                         type="primary"
-                                        ghost
                                         onClick={() => loadData()}
+                                        disabled={loading}
                                     >
                                         Refresh
                                     </Button>
@@ -313,194 +302,170 @@ const Visitors = () => {
                     </Card>
                 </Col>
                 <Col
-                    xl={24}
-                    lg={24}
+                    xl={12}
+                    lg={12}
                     md={24}
                     sm={24}
                     xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
+                    style={{ marginBottom: 24 }}
                 >
-                    <Row gutter={24}>
+                    <Row>
                         <Col
-                            xl={6}
-                            lg={6}
-                            md={12}
+                            xl={24}
+                            lg={24}
+                            md={24}
                             sm={24}
                             xs={24}
-                            style={{
-                                marginBottom: 24,
-                            }}
+                            style={{ marginBottom: 24 }}
                         >
                             <Card
+                                style={{ cursor: 'default' }}
+                                title="Count"
+                                loading={loading}
                                 bordered={false}
                                 hoverable
                                 className="z-shadow"
-                                loading={loading}
                             >
-                                <Statistic
-                                    title="Total Visitors"
-                                    value={visitorsData.total}
-                                    prefix={<TeamOutlined />}
-                                />
+                                <Row gutter={24}>
+                                    <Col md={8} sm={12} xs={24}>
+                                        <Statistic
+                                            className="text-center"
+                                            title="Total Visitors"
+                                            value={visitorsData.total}
+                                            prefix={<TeamOutlined />}
+                                        />
+                                    </Col>
+                                    <Col md={8} sm={12} xs={24}>
+                                        <Statistic
+                                            className="text-center"
+                                            title="New Visitors"
+                                            value={visitorsData.new}
+                                            prefix={<UserAddOutlined />}
+                                        />
+                                    </Col>
+                                    <Col md={8} sm={12} xs={24}>
+                                        <Statistic
+                                            className="text-center"
+                                            title="Returning Visitors"
+                                            value={visitorsData.old}
+                                            prefix={<UserSwitchOutlined />}
+                                        />
+                                    </Col>
+                                </Row>
                             </Card>
                         </Col>
                         <Col
-                            xl={6}
-                            lg={6}
-                            md={12}
+                            xl={24}
+                            lg={24}
+                            md={24}
                             sm={24}
                             xs={24}
-                            style={{
-                                marginBottom: 24,
-                            }}
+                            style={{ marginBottom: 24 }}
                         >
                             <Card
+                                style={{ cursor: 'default' }}
+                                title="Platform"
+                                loading={loading}
                                 bordered={false}
                                 hoverable
                                 className="z-shadow"
-                                loading={loading}
                             >
-                                <Statistic
-                                    title="New Visitors"
-                                    value={visitorsData.new}
-                                    prefix={<UserAddOutlined />}
-                                />
+                                {platformData.length !== 0 ? (
+                                    <Pie {...pieConfig} data={platformData} />
+                                ) : (
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                )}
                             </Card>
                         </Col>
                         <Col
-                            xl={6}
-                            lg={6}
-                            md={12}
+                            xl={24}
+                            lg={24}
+                            md={24}
                             sm={24}
                             xs={24}
-                            style={{
-                                marginBottom: 24,
-                            }}
+                            style={{ marginBottom: 24 }}
                         >
                             <Card
+                                style={{ cursor: 'default' }}
+                                title="Browser"
+                                loading={loading}
                                 bordered={false}
                                 hoverable
                                 className="z-shadow"
-                                loading={loading}
                             >
-                                <Statistic
-                                    title="Returning Visitors"
-                                    value={visitorsData.old}
-                                    prefix={<UserSwitchOutlined />}
-                                />
+                                {browserData.length !== 0 ? (
+                                    <Pie {...pieConfig} data={browserData} />
+                                ) : (
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                )}
                             </Card>
                         </Col>
                     </Row>
                 </Col>
                 <Col
-                    xl={24}
-                    lg={24}
+                    xl={12}
+                    lg={12}
                     md={24}
                     sm={24}
                     xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
+                    style={{ marginBottom: 24 }}
                 >
-                    <Card
-                        bordered={false}
-                        hoverable
-                        className="z-shadow"
-                        loading={loading}
-                    >
-                        <h4>Location</h4>
-                        {
-                            locationData.length > 0
-                                ?
-                                <Pie {...pieConfig} data={locationData} />
-                                :
-                                <Empty />
-                        }
-                    </Card>
-                </Col>
-                <Col
-                    xl={24}
-                    lg={24}
-                    md={24}
-                    sm={24}
-                    xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
-                >
-                    <Card
-                        bordered={false}
-                        hoverable
-                        className="z-shadow"
-                        loading={loading}
-                    >
-                        <h4>Devices</h4>
-                        {
-                            deviceData.length > 0
-                                ?
-                                <Pie {...pieConfig} data={deviceData} />
-                                :
-                                <Empty />
-                        }
-                    </Card>
-                </Col>
-                <Col
-                    xl={24}
-                    lg={24}
-                    md={24}
-                    sm={24}
-                    xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
-                >
-                    <Card
-                        bordered={false}
-                        hoverable
-                        className="z-shadow"
-                        loading={loading}
-                    >
-                        <h4>Browsers</h4>
-                        {
-                            browserData.length > 0
-                                ?
-                                <WordCloud {...wordCloudConfig} data={browserData} />
-                                :
-                                <Empty />
-                        }
-                    </Card>
-                </Col>
-                <Col
-                    xl={24}
-                    lg={24}
-                    md={24}
-                    sm={24}
-                    xs={24}
-                    style={{
-                        marginBottom: 24,
-                    }}
-                >
-                    <Card
-                        bordered={false}
-                        hoverable
-                        className="z-shadow"
-                        loading={loading}
-                    >
-                        <h4>Platforms</h4>
-                        {
-                            platformData.length > 0
-                                ?
-                                <WordCloud {...wordCloudConfig} data={platformData} />
-                                :
-                                <Empty />
-                        }
-                    </Card>
+                    <Row>
+                        <Col
+                            xl={24}
+                            lg={24}
+                            md={24}
+                            sm={24}
+                            xs={24}
+                            style={{ marginBottom: 24 }}
+                        >
+                            <Card
+                                style={{ cursor: 'default' }}
+                                title="Location"
+                                loading={loading}
+                                bordered={false}
+                                hoverable
+                                className="z-shadow"
+                            >
+                                {locationData.length !== 0 ? (
+                                    <WordCloud
+                                        {...wordCloudConfig}
+                                        data={locationData}
+                                        height={391}
+                                    />
+                                ) : (
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                )}
+                            </Card>
+                        </Col>
+                        <Col
+                            xl={24}
+                            lg={24}
+                            md={24}
+                            sm={24}
+                            xs={24}
+                            style={{ marginBottom: 24 }}
+                        >
+                            <Card
+                                style={{ cursor: 'default' }}
+                                title="Device"
+                                loading={loading}
+                                bordered={false}
+                                hoverable
+                                className="z-shadow"
+                            >
+                                {deviceData.length !== 0 ? (
+                                    <Pie {...pieConfig} data={deviceData} />
+                                ) : (
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                )}
+                            </Card>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
         </React.Fragment>
-    )
-}
+    );
+};
 
 export default Visitors;

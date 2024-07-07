@@ -19,7 +19,7 @@ const ResetPassword = () => {
     let location = useLocation();
 
     useEffect(() => {
-        document.title = `Reset Password - ${siteName}`;
+        document.title = `Сбросить пароль? - ${siteName}`;
     }, [])
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const ResetPassword = () => {
 
     const onSubmit = (values) => {
         setLoading(true);
-        
+
         axios.post(Routes.api.admin.resetPassword, {
             email: values.email,
             password: values.password,
@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
     return (
         <React.Fragment>
-            <AuthLayout title={'RESET PASSWORD'}>
+            <AuthLayout title={'Сброс Пароля'}>
                 <Form
                     name="resetPassword"
                     onFinish={onSubmit}
@@ -63,11 +63,11 @@ const ResetPassword = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your email'
+                                message: 'Пожалуйста введите ваш email'
                             },
                             {
                                 type: 'email',
-                                message: 'Invalid email address'
+                                message: 'Невалидный email'
                             }
                         ]}
                     >
@@ -79,16 +79,16 @@ const ResetPassword = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your new password'
+                                message: 'Пожалуйста введите ваш новый мароль'
                             },
                             {
                                 min: 5,
-                                message: 'The password is too short'
+                                message: 'Этот пароль слишком короткий'
                             },
                         ]}
                         hasFeedback
                     >
-                        <Input.Password prefix={<BsShieldLock />} placeholder="New Password"/>
+                        <Input.Password prefix={<BsShieldLock />} placeholder="Новый пароль"/>
                     </Form.Item>
 
                     <Form.Item
@@ -97,7 +97,7 @@ const ResetPassword = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your new password',
+                                message: 'ПОжалуйста введите ваш новый пароль',
                             },
                             ({ getFieldValue }) => ({
                                 validator(rule, value) {
@@ -118,7 +118,7 @@ const ResetPassword = () => {
                             <Button type="primary" htmlType="submit" block loading={loading}>
                                 Reset Password
                             </Button>
-                            
+
                             <Button type="default" htmlType="button" block disabled={loading}>
                                 <Link to={Routes.web.admin.login}>Back to Login</Link>
                             </Button>

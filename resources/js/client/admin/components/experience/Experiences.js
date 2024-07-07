@@ -18,7 +18,7 @@ const Experiences = () => {
 
     const columns = [
         {
-            title: 'Company',
+            title: 'Компания',
             dataIndex: 'company',
             search: true,
             sorter: true,
@@ -26,7 +26,7 @@ const Experiences = () => {
             ellipsis:true
         },
         {
-            title: 'Period',
+            title: 'Период',
             dataIndex: 'period',
             sorter: true,
             search: true,
@@ -34,7 +34,7 @@ const Experiences = () => {
             ellipsis:true
         },
         {
-            title: 'Position',
+            title: 'Должность',
             dataIndex: 'position',
             sorter: true,
             search: true,
@@ -42,7 +42,7 @@ const Experiences = () => {
             ellipsis:true
         },
         {
-            title: 'Details',
+            title: 'Детали',
             dataIndex: 'details',
             sorter: true,
             search: true,
@@ -50,7 +50,7 @@ const Experiences = () => {
             hideInTable: true
         },
         {
-            title: 'Option',
+            title: 'Опции',
             valueType: 'option',
             align: 'center',
             width: 170,
@@ -58,7 +58,7 @@ const Experiences = () => {
             render: (text, row) => [
                 <Dropdown key="0" overlay={menu(row)} trigger={['click']}>
                     <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                        Option <DownOutlined />
+                        Опции <DownOutlined />
                     </a>
                 </Dropdown>,
             ],
@@ -72,7 +72,7 @@ const Experiences = () => {
         });
         confirm({
             confirmLoading: loading,
-            title: `Do you want to delete ${ids.length == 1 ? 'this' : 'these'} ${ids.length == 1 ? 'item' : 'items'}?`,
+            title: `Вы уверены, что хотите удалить ${ids.length === 1 ? 'этот элемент' : 'эти элементы'}?`,
             icon: <ExclamationCircleOutlined />,
             mask: true,
             onOk() {
@@ -82,15 +82,15 @@ const Experiences = () => {
                         ids: ids
                     }
                 })
-                .then(response => {
-                    Utils.handleSuccessResponse(response, () => {
-                        Utils.showTinyNotification(response.data.message, 'success');
-                        actionRef.current?.reloadAndRest();
-                    });
-                })
-                .catch((error) => {
-                    Utils.handleException(error);
-                }).finally(() => {
+                    .then(response => {
+                        Utils.handleSuccessResponse(response, () => {
+                            Utils.showTinyNotification(response.data.message, 'success');
+                            actionRef.current?.reloadAndRest();
+                        });
+                    })
+                    .catch((error) => {
+                        Utils.handleException(error);
+                    }).finally(() => {
                     setLoading(false);
                 });
             },
@@ -99,22 +99,22 @@ const Experiences = () => {
 
     const menu = (row) => (
         <Menu>
-            <Menu.Item 
-                key="0" 
+            <Menu.Item
+                key="0"
                 onClick={() => {
                     setItemToEdit(row);
                     setModalVisible(true);
                 }}
                 icon={<EditOutlined />}
             >
-                Edit
+                Редактировать
             </Menu.Item>
-            <Menu.Item 
+            <Menu.Item
                 key="1"
                 onClick={() => showConfirm([row])}
                 icon={<DeleteOutlined />}
             >
-                Delete
+                Удалить
             </Menu.Item>
         </Menu>
     );
@@ -124,18 +124,18 @@ const Experiences = () => {
             <PageWrapper>
                 <PageHeader
                     style={{padding: 0}}
-                    title="Experiences"
+                    title="Опыт работы"
                     subTitle={
                         <Typography.Text
                             style={{ width: '100%', color: 'grey' }}
-                            ellipsis={{ tooltip: 'Your job history' }}
+                            ellipsis={{ tooltip: 'Ваша история работы' }}
                         >
-                            Your job history
+                            Ваша история работы
                         </Typography.Text>
                     }
                     extra={[
                         <Button key="add" type="primary" onClick={() => setModalVisible(true)}>
-                            Add New
+                            Добавить
                         </Button>,
                     ]}
                 >
@@ -153,27 +153,26 @@ const Experiences = () => {
                             // onChange: (_, selectedRows) => setSelectedRows(selectedRows),
                         }}
                         expandable={{
-                            // eslint-disable-next-line react/display-name
-                            expandedRowRender: record => <p style={{ margin: '0 17px' }}>Details: {record.details}</p>,
+                            expandedRowRender: record => <p style={{ margin: '0 17px' }}>Детали: {record.details}</p>,
                         }}
                         tableAlertRender={({ selectedRowKeys, onCleanSelected }) => (
                             <Space>
                                 <span>
-                                    Selected {selectedRowKeys.length} items
+                                    Выбрано {selectedRowKeys.length} элементов
                                     <a
                                         style={{
                                             marginLeft: 8,
                                         }}
                                         onClick={onCleanSelected}
                                     >
-                                        <strong>Cancel Selection</strong>
+                                        <strong>Отменить выбор</strong>
                                     </a>
                                 </span>
                             </Space>
                         )}
                         tableAlertOptionRender={({ selectedRows }) => (
                             <Space>
-                                <Button type="primary" onClick={() => showConfirm(selectedRows)}>Batch Deletion</Button>
+                                <Button type="primary" onClick={() => showConfirm(selectedRows)}>Удалить выбранные</Button>
                             </Space>
                         )}
                         actionRef={actionRef}
@@ -189,9 +188,9 @@ const Experiences = () => {
                                     return response.data.payload
                                 })
                             })
-                            .catch(error => {
-                                Utils.handleException(error);
-                            })
+                                .catch(error => {
+                                    Utils.handleException(error);
+                                })
                         }}
                         dateFormatter="string"
                         search={false}
@@ -205,7 +204,7 @@ const Experiences = () => {
             {
                 modalVisible && (
                     <Experience
-                        title={itemToEdit ? 'Edit Experience' : 'Add Experience'}
+                        title={itemToEdit ? 'Редактировать Опыт' : 'Добавить Опыт'}
                         itemToEdit={itemToEdit}
                         visible={modalVisible}
                         handleCancel={

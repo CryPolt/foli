@@ -84,7 +84,7 @@ const About = () => {
     const [cover, setCover] = useState(null);
     const [taglines, setTagLines] = useState([]);
     const [socialLinks, setSocialLinks] = useState([]);
-    
+
     const [focusTaglines, setFocusTaglines] = useState(false);
     const [focusSocialLinks, setFocusSocialLinks] = useState(false);
 
@@ -119,11 +119,11 @@ const About = () => {
             smartBackspace: true,
             loop: true
         };
-        
+
         if (typedElement.current) {
             typed.current = new Typed(typedElement.current, options);
         }
-        
+
         return () => {
             if (typed.current) {
                 typed.current.destroy();
@@ -229,7 +229,7 @@ const About = () => {
             }).finally(() => {
                 setLoading(false);
             });
-            
+
         })
         .catch((info) => {
             console.log('Validate Failed:', info);
@@ -288,7 +288,7 @@ const About = () => {
             setCv(file);
         }, 2000);
     }
-    
+
     const coverUploadCallback = (file) => {
         setTimeout(() => {
             setCover(file);
@@ -306,7 +306,7 @@ const About = () => {
     return (
         <React.Fragment>
             <Row gutter={24}>
-                <Col 
+                <Col
                     xl={10}
                     lg={10}
                     md={24}
@@ -337,7 +337,7 @@ const About = () => {
                                     <Title level={4}>
                                         {name}
                                         <EditSpan onClick={() => {focusInput('name')}}>
-                                            <i className="fa fa-pencil-alt" title="Edit"></i>
+                                            <i className="fa fa-pencil-alt" title="Редактировать"></i>
                                         </EditSpan>
                                     </Title>
                                 </Space>
@@ -347,7 +347,7 @@ const About = () => {
                                     <React.Fragment>
                                         Email
                                         <EditSpan onClick={() => {focusInput('email')}}>
-                                            <i className="fa fa-pencil-alt" title="Edit"></i>
+                                            <i className="fa fa-pencil-alt" title="Редактировать"></i>
                                         </EditSpan>
                                     </React.Fragment>
                                 } description={
